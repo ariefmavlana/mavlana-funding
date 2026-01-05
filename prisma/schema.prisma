@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for donors
+model User {
+  id         String                  @id @default(cuid())
+  email      String                  @unique
+  name       String
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+  donations  Donation[]
+  newsletter NewsletterSubscription?
+
+  @@index([email])
+}
+
+// Cause/Campaign model
+model Cause {
+  id              String        @id @default(cuid())
+  title           String
+  description     String
+  fullDescription String?
+  image           String
+  category        String
+  targetAmount    Float
+  raisedAmount    Float         @default(0)
+  donors          Int           @default(0)
+  daysLeft        Int
+  featured        Boolean       @default(false)
+  status          String        @default("active") // active, completed, cancelled
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  donations       Donation[]
+  updates         CauseUpdate[]
+
+  @@index([category])
+  @@index([featured])
+  @@index([status])
+}
+
+// Donation model
+model Donation {
+  id         String   @id @default(cuid())
+  amount     Float
+  donorName  String
+  donorEmail String
+  message    String?
+  status     String   @default("pending") // pending, completed, failed, refunded
+  paymentId  String?  @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId  String?
+  cause   Cause   @relation(fields: [causeId], references: [id], onDelete: Cascade)
+  causeId String
+
+  @@index([donorEmail])
+  @@index([status])
+  @@index([causeId])
+  @@index([userId])
+}
+
+// Cause Update/News model
+model CauseUpdate {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cause   Cause  @relation(fields: [causeId], references: [id], onDelete: Cascade)
+  causeId String
+
+  @@index([causeId])
+}
+
+// Contact Form Submission model
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([read])
+}
+
+// Newsletter Subscription model
+model NewsletterSubscription {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?  @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([active])
+}
+
+// Campaign/Page model (untuk halaman statis seperti About, Terms, etc)
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  content   String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([published])
+}
