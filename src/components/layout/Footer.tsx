@@ -3,33 +3,44 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { id as i18n } from '@/lib/i18n';
+import { FaFacebookF, FaTwitter, FaInstagram, FaPaperPlane } from 'react-icons/fa';
 
 export function Footer() {
   return (
-    <footer className="bg-linear-to-b from-[#041D57] to-[#000814] text-white py-16 md:py-20">
-      <div className="container mx-auto px-4">
+    <footer className="bg-linear-to-b from-color-primary-dark to-[#000814] text-white py-24 md:py-32 relative overflow-hidden">
+      {/* Decorative Asset */}
+      <div className="absolute top-0 right-0 w-96 h-96 opacity-[0.03] pointer-events-none translate-x-24 -translate-y-24">
+        <Image src="/assets/images/charity_footer.png" alt="Charity Decorative" fill className="object-contain" />
+      </div>
+
+      <div className="container relative z-10">
         {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-linear-to-r from-[#18bfc3] to-[#3ac798] rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                M
+            <Link href="/" className="flex items-center gap-4 mb-8 group">
+              <div className="relative w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-xl overflow-hidden border border-white/10 group-hover:rotate-6 transition-transform">
+                <Image
+                  src="/assets/images/footer_logo.png"
+                  alt="Footer Logo"
+                  fill
+                  className="object-contain p-2"
+                />
               </div>
-              <span className="font-bold text-xl">Mavlana</span>
-            </div>
+              <span className="font-black text-2xl tracking-tight text-white">Mavlana</span>
+            </Link>
             <p className="text-teal-50/70 text-sm leading-relaxed">
               Menciptakan dampak nyata melalui kepedulian dan kemurah-hatian untuk masa depan yang lebih baik.
             </p>
-            <div className="flex gap-4 mt-6">
-              <a href="#" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#18bfc3] flex items-center justify-center transition-all duration-300">
-                f
+            <div className="flex gap-4 mt-8">
+              <a href="#" className="w-12 h-12 rounded-xl bg-white/5 hover:bg-color-primary-teal flex items-center justify-center transition-all duration-300 group border border-white/5">
+                <FaFacebookF className="text-white/40 group-hover:text-white transition-colors" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#18bfc3] flex items-center justify-center transition-all duration-300">
-                t
+              <a href="#" className="w-12 h-12 rounded-xl bg-white/5 hover:bg-color-primary-teal flex items-center justify-center transition-all duration-300 group border border-white/5">
+                <FaTwitter className="text-white/40 group-hover:text-white transition-colors" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-lg bg-white/10 hover:bg-[#18bfc3] flex items-center justify-center transition-all duration-300">
-                i
+              <a href="#" className="w-12 h-12 rounded-xl bg-white/5 hover:bg-color-primary-teal flex items-center justify-center transition-all duration-300 group border border-white/5">
+                <FaInstagram className="text-white/40 group-hover:text-white transition-colors" />
               </a>
             </div>
           </div>
@@ -103,9 +114,10 @@ export function Footer() {
               />
               <button
                 type="submit"
-                className="btn-primary py-2.5 px-4 font-semibold"
+                className="btn-primary h-14 w-full flex items-center justify-center gap-3 font-black uppercase text-xs tracking-widest"
               >
-                {i18n.footer.subscribe}
+                <span>{i18n.footer.subscribe}</span>
+                <FaPaperPlane className="text-xs" />
               </button>
             </form>
           </div>

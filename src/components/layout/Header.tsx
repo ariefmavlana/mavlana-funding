@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
-import { Menu, X, Heart } from 'lucide-react';
+import { FaHeart } from 'react-icons/fa';
+import { HiMenu, HiX } from 'react-icons/hi';
 import { Button } from '@/components/ui/button';
 import { id as i18n } from '@/lib/i18n';
 
@@ -17,78 +19,87 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm transition-all duration-300">
-      <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <Link href="/" className="shrink-0 group flex items-center gap-2">
-            <div className="w-12 h-12 bg-linear-to-br from-[#18bfc3] to-[#041D57] rounded-lg flex items-center justify-center text-white font-bold text-lg group-hover:shadow-lg transition-all duration-300 transform group-hover:scale-105">
-              M
+    <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-divider shadow-sm transition-all duration-500">
+      <div className="container mx-auto">
+        <nav className="flex items-center justify-between h-24">
+          {/* Logo - Premium Style */}
+          <Link href="/" className="shrink-0 group flex items-center gap-4">
+            <div className="relative w-14 h-14 bg-white rounded-2xl flex items-center justify-center group-hover:bg-color-primary-teal transition-all duration-700 shadow-xl group-hover:rotate-10 group-hover:scale-110 overflow-hidden border border-slate-100">
+              <Image
+                src="/assets/images/logo.png"
+                alt="Logo"
+                fill
+                className="object-contain p-2"
+              />
             </div>
-            <span className="hidden sm:inline font-bold text-lg text-[#041D57] group-hover:text-[#18bfc3] transition-colors">
-              Mavlana
-            </span>
+            <div className="hidden sm:flex flex-col">
+              <span className="font-black text-3xl tracking-[-0.08em] text-color-primary-dark group-hover:text-color-primary-teal transition-colors leading-none">
+                MAVLANA
+              </span>
+              <span className="text-[9px] font-black uppercase tracking-[0.4em] text-color-primary-teal mt-1">
+                Funding
+              </span>
+            </div>
           </Link>
 
-          {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex gap-10">
+          {/* Navigation Links - Desktop High-End */}
+          <div className="hidden md:flex gap-2">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[#041D57] hover:text-[#18bfc3] transition-colors font-semibold text-sm relative group"
+                className="px-6 py-3 rounded-2xl text-color-primary-dark/70 hover:text-color-primary-teal transition-all font-black text-sm uppercase tracking-widest relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-[#18bfc3] to-[#3ac798] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-color-primary-teal scale-0 group-hover:scale-100 transition-transform duration-500"></span>
               </Link>
             ))}
           </div>
 
-          {/* Donate Button */}
-          <div className="flex items-center gap-4">
-            <Button
-              asChild
-              className="hidden sm:flex bg-linear-to-r from-[#18bfc3] to-[#14a8aa] hover:shadow-lg gap-2"
-            >
-              <Link href="/donate">
-                <Heart size={18} fill="currentColor" />
-                {i18n.buttons.donateNow}
-              </Link>
-            </Button>
+          {/* Action Area */}
+          <div className="flex items-center gap-6">
+            <button className="hidden lg:flex items-center justify-center w-12 h-12 rounded-2xl hover:bg-slate-50 transition-colors group">
+              <Image src="/assets/images/search-icon.png" alt="Search" width={24} height={24} className="opacity-50 group-hover:opacity-100 transition-opacity" />
+            </button>
 
-            {/* Mobile Menu Button */}
+            <Link href="/donate" className="btn-primary group hidden sm:flex">
+              <FaHeart size={18} className="fill-white group-hover:scale-125 transition-transform duration-500 mr-2" />
+              <span>{i18n.buttons.donateNow}</span>
+            </Link>
+
+            {/* Mobile Menu Button - Stylish */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="md:hidden w-12 h-12 flex items-center justify-center bg-slate-50 hover:bg-slate-100 rounded-2xl transition-all border border-slate-200"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <HiX size={28} className="text-color-primary-dark" /> : <HiMenu size={28} className="text-color-primary-dark" />}
             </button>
           </div>
         </nav>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Immersive */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-100">
-            <div className="flex flex-col gap-2 mt-4">
+          <div className="md:hidden fixed inset-x-0 top-24 bottom-0 bg-white/95 backdrop-blur-2xl z-40 p-8 border-t border-slate-100 animate-slide-up">
+            <div className="flex flex-col gap-6">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-[#041D57] hover:bg-gray-50 px-4 py-2 rounded-lg transition-all font-semibold"
+                  className="text-4xl font-black text-color-primary-dark hover:text-color-primary-teal transition-all tracking-tighter"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-              <Button
-                asChild
-                className="w-full bg-linear-to-r from-[#18bfc3] to-[#14a8aa] hover:shadow-lg gap-2 mt-2"
+              <div className="h-px bg-slate-100 w-full my-4"></div>
+              <Link
+                href="/donate"
+                className="btn-primary py-8! text-2xl!"
+                onClick={() => setIsMenuOpen(false)}
               >
-                <Link href="/donate" onClick={() => setIsMenuOpen(false)}>
-                  <Heart size={18} fill="currentColor" />
-                  {i18n.buttons.donateNow}
-                </Link>
-              </Button>
+                <FaHeart size={24} className="fill-white mr-4" />
+                {i18n.buttons.donateNow}
+              </Link>
             </div>
           </div>
         )}
